@@ -5,10 +5,11 @@
 ## Thus, I've wrapped it in a pushd / popd to get to the point where we can
 ## add steamcmd to the path and get the desired behavior
 
-## Assumes that this script is in the steamcmd directory, as we pull the
-## location of steam cmd from the directory where this script resides.
-
-STEAMCMDLOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+## Specify the steamcmd directory explicitly.  Previously, we used some bash
+## magic to find the location of the script being invoked, but we could get the
+## location of the symbolic link to the script instead of the location of the
+## script itself.
+STEAMCMDLOC=/usr/lib/steamcmd/
 
 pushd $STEAMCMDLOC
 ./steamcmd.sh $@
