@@ -28,3 +28,34 @@ IRC Bot capable of changing server status
 * Start game
 * Stop game
 * Broadcast message to logged in users
+
+
+Status of Games
+===============
+
+FactorIO
+---------
+
+Can be started, stopped by hand
+
+Minecraft Vanilla
+-----------------
+Can be started, stopped by hand
+Currently having issues logging in, may be related to mojang outage (3-19-16)
+
+Minecraft FTB
+----------------
+Unattempted
+
+7 Days to Die
+---------------
+Unattempted
+
+Terraria
+--------------
+Unattempted
+
+Mount and Blade
+---------------
+
+Unattempted
