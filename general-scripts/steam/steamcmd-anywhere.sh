@@ -11,6 +11,12 @@
 ## script itself.
 STEAMCMDLOC=/usr/lib/steamcmd/
 
+leditPath=$(which ledit)
+
 pushd $STEAMCMDLOC
-./steamcmd.sh $@
+if [ -e $leditPath ] ; then
+    ledit -- ./steamcmd.sh $@
+else
+    ./steamcmd.sh $@
+fi
 popd
