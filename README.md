@@ -42,6 +42,9 @@ Minecraft Vanilla
 -----------------
 Can be started, stopped by hand
 
+Users have to be added to the whitelist manually. Someone with ops needs to be
+online to do that.
+
 Have to manually add users to whitelist turn whitelist off and on by hand.
 
 Minecraft FTB
@@ -50,13 +53,21 @@ Unattempted
 
 7 Days to Die
 ---------------
-Unattempted
+Need a serverconfig file, but otherwise should be ready
 
 Terraria
 --------------
-Unattempted
+Server installed, untested
 
 Mount and Blade
 ---------------
 
-Unattempted
+Steam doesn't have a dedicated server, will take more effort.
+
+Project Zomboid
+---------------
+Dedicated Server Installed
+
+Don't Starve Together
+--------------------
+Dedicated Server Installed
