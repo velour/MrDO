@@ -15,7 +15,7 @@ leditPath=$(which ledit)
 
 pushd $STEAMCMDLOC
 if [ -e $leditPath ] ; then
-    ledit -- ./steamcmd.sh $@
+    ledit ./steamcmd.sh $@
 else
     ./steamcmd.sh $@
 fi
