@@ -41,7 +41,8 @@ Can be started, stopped by hand
 Minecraft Vanilla
 -----------------
 Can be started, stopped by hand
-Currently having issues logging in, may be related to mojang outage (3-19-16)
+
+Have to manually add users to whitelist turn whitelist off and on by hand.
 
 Minecraft FTB
 ----------------
