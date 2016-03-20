@@ -1,7 +1,9 @@
 #!/bin/bash
+## Just a wrapper around the command line for starting a factorio instances
 
-export LD_PRELOAD='/usr/$LIB/libstdc++.so.6'
-NAME="testMultiplayer2.zip"
+NAME=$1
+CMD="/home/servers/factorio/bin/x64/factorio --start-server $NAME"
 
-echo "/home/servers/factorio/bin/x64/factorio --start-server $NAME"
-/home/servers/factorio/bin/x64/factorio --start-server $NAME
+echo "Scren not found, issuing on this shell $CMD"
+$CMD
+
