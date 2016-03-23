@@ -1,4 +1,5 @@
 import digitalocean
+import datetime
 
 keyFile = open("./config/digital-ocean-test-key")
 secretKey = keyFile.read()
@@ -118,7 +119,8 @@ def tearDown(manager, droplet, name=None):
       destroy the droplet so you stop paying for it
     """
     if name == None:
-        name = droplet.name ## append some sort of UID, time stamp, etc
+        stamp = str(datetime.datetime.utcnow())
+        name = droplet.name + '-' + stamp
     droplet.power_off()
     snap_name = snapshot_droplet(manager, droplet, name)
     droplet.destroy()
