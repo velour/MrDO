@@ -99,12 +99,15 @@ def snapshot_droplet(manager, droplet, name, overwrite=False):
     previous_image = get_image_by_name(manager, name)
     if previous_image:
         if not overwrite:
-            raise Exception("snapshot_droplet: won't snapshot over
-            previous image without being supplied 'overwrite=True'")
+            raise Exception("snapshot_droplet: won't snapshot over previous image without being supplied 'overwrite=True'")
         else:
             raise Exception("Clear image stub")
     ## if we get to here, the way is clear to save the image
-    raise Exception("save image stub")
+    droplet.take_snapshot(name, power_off=True)
+    actions = droplet.get_actions()
+    if actions:
+        assumed_snap = actions[0]
+        assumed_snap.wait()
 
 
 def tearDown(manager, droplet, name=None):
@@ -121,7 +124,6 @@ def tearDown(manager, droplet, name=None):
     if name == None:
         stamp = str(datetime.datetime.utcnow())
         name = droplet.name + '-' + stamp
-    droplet.power_off()
     snap_name = snapshot_droplet(manager, droplet, name)
     droplet.destroy()
     return snap_name
