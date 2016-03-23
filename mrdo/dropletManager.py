@@ -13,7 +13,7 @@ def get_image_by_name(manager, name):
     name is the name of an image
 
     if the image exists, return it.
-    if no image by that name exists, return an error saying that.
+    if no image by that name exists, return None
     if more than a single image with that name exists, return an error.
     """
     images = manager.get_my_images()
@@ -24,10 +24,8 @@ def get_image_by_name(manager, name):
                 raise Exception("get_image_by_name: There are two images with the same name!")
             else:
                 toRet = image
-    if toRet:
-        return toRet
-    else:
-        raise Exception("get_image_by_name: There was no such image in images")
+    return toRet
+
 
 
 def more_recent(image1, image2):
@@ -89,16 +87,26 @@ def droplet_of_image(imagedict):
     return droplet
 
 
-def snapshot_droplet(droplet, name):
+def snapshot_droplet(manager, droplet, name, overwrite=False):
     """
     Save a snapshot of the droplet
 
-    if a droplet of that name exists, fail
+    if a droplet of that name exists, behavior depends on overwrite:
+      if overwrite is true, replace the old snapshot
+      otherwise, raise an exception
     """
-    raise Exception("stub")
+    previous_image = get_image_by_name(manager, name)
+    if previous_image:
+        if not overwrite:
+            raise Exception("snapshot_droplet: won't snapshot over
+            previous image without being supplied 'overwrite=True'")
+        else:
+            raise Exception("Clear image stub")
+    ## if we get to here, the way is clear to save the image
+    raise Exception("save image stub")
 
 
-def tearDown(droplet, name=None):
+def tearDown(manager, droplet, name=None):
     """
     For a running droplet, take a snapshot, then destroy the active droplet.
     returns the name of the constructed snapshot
@@ -112,6 +120,6 @@ def tearDown(droplet, name=None):
     if name == None:
         name = droplet.name ## append some sort of UID, time stamp, etc
     droplet.power_off()
-    snap_name = snapshot_droplet(droplet, name)
+    snap_name = snapshot_droplet(manager, droplet, name)
     droplet.destroy()
     return snap_name
