@@ -73,9 +73,6 @@ def get_most_recent_image(manager):
 def droplet_of_image(imagedict):
     """
     Spin up a droplet from the specified image
-
-    Note that the droplet hasn't been constructed yet, you have to create it and
-    destroy it by hand
     """
     imagedict.load() ## just in case we haven't yet, but I don't know that this has any effect for us?
     droplet = digitalocean.Droplet(
@@ -85,6 +82,7 @@ def droplet_of_image(imagedict):
         region = 'nyc2', ## this should be pulled from the imagedict [JTT 21-03-16]
         size = '4GB',    ## this should be pulled from the imagedict
         backups = False)
+    droplet.create()
     return droplet
 
 
