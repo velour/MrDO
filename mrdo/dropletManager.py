@@ -101,7 +101,7 @@ def snapshot_droplet(manager, droplet, name, overwrite=False):
         if not overwrite:
             raise Exception("snapshot_droplet: won't snapshot over previous image without being supplied 'overwrite=True'")
         else:
-            raise Exception("Clear image stub")
+            previous_image.destroy()
     ## if we get to here, the way is clear to save the image
     droplet.take_snapshot(name, power_off=True)
     actions = droplet.get_actions()
