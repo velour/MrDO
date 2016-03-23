@@ -12,8 +12,9 @@ def get_image_by_name(manager, name):
     Manager is a digitalocean.Manager
     name is the name of an image
 
-    if the image exists, start a droplet based on that image
-    if there are more than a single image with the same name in the list, the fail
+    if the image exists, return it.
+    if no image by that name exists, return an error saying that.
+    if more than a single image with that name exists, return an error.
     """
     images = manager.get_my_images()
     toRet = None
@@ -31,7 +32,9 @@ def get_image_by_name(manager, name):
 
 def more_recent(image1, image2):
     """
-    true if image1 is more recent than image 2, according to image.created_at
+    compares created_at of two images. When used as part of sorted or
+    list.sort, returns a list from most to least recent according to
+    the creation date of the image.
     """
     if image1.created_at > image2.created_at:
         return -1
@@ -48,7 +51,8 @@ def get_most_recent_image(manager):
     if there are no images, the fail
     otherwise, return the most recent image by time
 
-    if two images have the same time exactly, that's really surprising. also fail.
+    if two images have the same time exactly, that's really
+    surprising. also fail.
     """
     ## created_at gives the images time
     images = manager.get_my_images()
@@ -88,6 +92,8 @@ def droplet_of_image(imagedict):
 def snapshot_droplet(droplet, name):
     """
     Save a snapshot of the droplet
+
+    if a droplet of that name exists, fail
     """
     raise Exception("stub")
 
@@ -95,9 +101,17 @@ def snapshot_droplet(droplet, name):
 def tearDown(droplet, name=None):
     """
     For a running droplet, take a snapshot, then destroy the active droplet.
+    returns the name of the constructed snapshot
+
+    The standard approach to snapshotting a droplet for later use is:
+      power the droplet off
+      ask DigitalOcean to take a snapshot
+      wait until the snapshot is constructed
+      destroy the droplet so you stop paying for it
     """
     if name == None:
-        name = droplet.name ## and append some sort of UID, time stamp, something
+        name = droplet.name ## append some sort of UID, time stamp, etc
     droplet.power_off()
-    snapshot_droplet(droplet, name)
+    snap_name = snapshot_droplet(droplet, name)
     droplet.destroy()
+    return snap_name
