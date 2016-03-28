@@ -46,15 +46,15 @@ def saveWorld(Object):
         Raises an exception if the object is missing fields when we try
         to reduce it to json.
         """
-        dict = {}
-        dict['name'] = self.name
-        dict['path'] = self.path
-        dict['shortDesc'] = self.shortDesc
-        dict['longDesc'] = self.longDesc
-        dict['createdDate'] = self.createdDate
-        dict['state'] = self.state
+        saveDict = {}
+        saveDict['name'] = self.name
+        saveDict['path'] = self.path
+        saveDict['shortDesc'] = self.shortDesc
+        saveDict['longDesc'] = self.longDesc
+        saveDict['createdDate'] = self.createdDate
+        saveDict['state'] = self.state
 
-        for (id, obj) in dict.items():
+        for (id, obj) in saveDict.items():
             if obj == None:
                 exString = "saveWorld missing field %s; aborting save." % id
                 raise Exception(exString)
@@ -65,17 +65,17 @@ def saveWorld(Object):
         else:
             raise Exception("flush json to disk stub")
 
-    def fromJSON(dict):
+    def fromJSON(saveDict):
         """
         Construct a saved world object from a JSON description of it's relevant
         fields.
         """
-        return savedWorld(name = dict['name'],
-                          path = dict['path'],
-                          shortDesc = dict['shortDesc'],
-                          longDesc = dict['longDesc'],
-                          createdDate = dict['createdDate'],
-                          state = dict['state'])
+        return savedWorld(name = saveDict['name'],
+                          path = saveDict['path'],
+                          shortDesc = saveDict['shortDesc'],
+                          longDesc = saveDict['longDesc'],
+                          createdDate = saveDict['createdDate'],
+                          state = saveDict['state'])
 
     def fromPath(p):
         """
