@@ -31,3 +31,57 @@ def saveWorld(Object):
     def __str__(self):
         retString = "[%s] %s" % (str_of_type self.state, self.name)
         return retSrting
+
+    def copy(self):
+        raise Exception("Stub of copy")
+
+    def remove(self):
+        raais Exception("Stub of remove")
+
+    def toJSON(self, outpath=None):
+        """
+        Renders the non-code portions of the savedWorld object to json for
+        transmission and storage.
+
+        Raises an exception if the object is missing fields when we try
+        to reduce it to json.
+        """
+        dict = {}
+        dict['name'] = self.name
+        dict['path'] = self.path
+        dict['shortDesc'] = self.shortDesc
+        dict['longDesc'] = self.longDesc
+        dict['createdDate'] = self.createdDate
+        dict['state'] = self.state
+
+        for (id, obj) in dict.items():
+            if obj == None:
+                exString = "saveWorld missing field %s; aborting save." % id
+                raise Exception(exString)
+
+        if outpath:
+            ## here we marshall the object to disk
+            raise Exception("print json to stdout stub")
+        else:
+            raise Exception("flush json to disk stub")
+
+    def fromJSON(dict):
+        """
+        Construct a saved world object from a JSON description of it's relevant
+        fields.
+        """
+        return savedWorld(name = dict['name'],
+                          path = dict['path'],
+                          shortDesc = dict['shortDesc'],
+                          longDesc = dict['longDesc'],
+                          createdDate = dict['createdDate'],
+                          state = dict['state'])
+
+    def fromPath(p):
+        """
+        Construct a saved world object from a path painting at a json file that
+        describes it.
+        """
+        raise Exception("Stub of fromPath")
+        jsonOfPath = None ## fill in with loading json from path
+        return fromJSON(jsonOfPath)
