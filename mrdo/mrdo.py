@@ -10,7 +10,7 @@ default_server = ServerSpec("someIrcServer", password = "notthepassword")
 
 class MrDo(SingleServerIRCBot):
 
-    def __init__(self, server = default_server):
+    def __init__(self, server=default_server):
         SingleServerIRCBot.__init__(self,[server], "MrDo", "MrDo")
         self.operators = ["some", "secret", "powerful", "people"]
         self.channel = "#aChannelToConnectTo"
