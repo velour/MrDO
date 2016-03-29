@@ -135,4 +135,10 @@ class Configuration(object):
         """
         Adds a digital ocean API key to the assoc list of users -> api keys
         """
-        raise Exception("Stub: add_api_key")
+        ## structure of DO_API_KEYS is an assoc list, issuer -> API_KEY, one per
+        if self._get_auth_level(issuer) > NO_ONE:
+            self.settings[Configuration.DO_API_KEY][issuer] = key_string
+            print "Set Digital Ocean API key for", issuer
+        else:
+            print issuer, "can't start a Digital Ocean droplet, so I'm not taking their key."
+
