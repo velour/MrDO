@@ -105,7 +105,7 @@ class Configuration(object):
 
     def op_user(self, issuer, to_bless):
         """
-        Blesses a user, allowing them to add other users to the list of folks
+        Gives ops to user, allowing them to add other users to the list of folks
         who can start and stop servers.
         """
         if self._get_auth_level(issuer) == Configuration.OP:
@@ -119,11 +119,17 @@ class Configuration(object):
 
     def unop_user(self, issuer, to_curse):
         """
-        Unblesses a user, moving them from blessed to user status.
-        Issuer needs to be blessed, the person to be removed also
-        needs to be blessed.
+        Removes ops from a user.
+        Issuer needs to be op, the person to be removed also needs to have ops.
         """
-        raise Exception("Stub: curse_user")
+        if self._get_auth_level(issuer) == Configuration.OP:
+            if to_rem in self.settings[Configuration.IRC_OPS]:
+                self.settings[Configuration.IRC_OPS].remove(to_rem)
+                print to_rem, "successfully removed from ops", issuer
+            else:
+                print to_rem, "not an op."
+        else:
+            print issuer, "lacks authority to unop users"
 
     def add_do_api_key(self, issuer, key_string):
         """
