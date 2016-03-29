@@ -1,6 +1,7 @@
 import datettime
+import json
 
-def saveWorld(Object):
+def SaveWorld(Object):
     INITIAL_WORLD = 0 ## Starting world state, for things like factorio speedrun
     ONGOING_PLAY = 1
     ARCHIVED = 2 ## Saved game state not meant to be saved over, just
@@ -70,7 +71,7 @@ def saveWorld(Object):
         Construct a saved world object from a JSON description of it's relevant
         fields.
         """
-        return savedWorld(name = saveDict['name'],
+        return SavedWorld(name = saveDict['name'],
                           path = saveDict['path'],
                           shortDesc = saveDict['shortDesc'],
                           longDesc = saveDict['longDesc'],
@@ -82,6 +83,16 @@ def saveWorld(Object):
         Construct a saved world object from a path painting at a json file that
         describes it.
         """
-        raise Exception("Stub of fromPath")
-        jsonOfPath = None ## fill in with loading json from path
-        return fromJSON(jsonOfPath)
+        f = open(p,'r')
+        str = f.read()
+        asJSON = json.loads(str)
+        return fromJSON(asJSON)
+
+    def toPath(self,p):
+        """
+        Converts the save game object to JSON stored at a path
+        """
+        f = open(p, 'c')
+        asJSON = self.toJSON()
+        json.dumps(asJSON, f)
+        f.close()
