@@ -103,17 +103,21 @@ class Configuration(object):
         else:
             print issuer, "lacks authority to remove blessed users"
 
-    def bless_user(self, issuer, to_bless):
+    def op_user(self, issuer, to_bless):
         """
         Blesses a user, allowing them to add other users to the list of folks
         who can start and stop servers.
-
-        The issuer needs to be blessed, and the user being blessed needs to be
-        authorized at the user level themselves
         """
-        raise Exception("Stub: bless_user")
+        if self._get_auth_level(issuer) == Configuration.OP:
+            if to_add in self.settings[Configuration.IRC_OPS]:
+                print to_add, "already an op. Not adding them."
+            else:
+                self.settings[Configuration.IRC_OPS].append(to_add)
+                print issuer, "Successfully added", to_add
+        else:
+            print issuer, "lacks authority to add ops."
 
-    def curse_user(self, issuer, to_curse):
+    def unop_user(self, issuer, to_curse):
         """
         Unblesses a user, moving them from blessed to user status.
         Issuer needs to be blessed, the person to be removed also
