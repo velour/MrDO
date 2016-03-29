@@ -90,11 +90,18 @@ class Configuration(object):
         else:
             print issuer, "lacks authority to add blessed users."
 
-    def rem_user(self, issuer, to_add):
+    def rem_user(self, issuer, to_rem):
         """
         Removes a name from the list of IRC_UNAME, those that can start / stop servers
         """
-        raise Exception("Stub: rem_user")
+        if self._get_auth_level(issuer) == Configuration.OP:
+            if to_rem in self.settings[Configuration.IRC_BLESSD]:
+                self.settings[Configuration.IRC_BLESSD].remove(to_rem)
+                print to_rem, "successfully removed from blessed users by", issuer
+            else:
+                print to_rem, "not a blessed user."
+        else:
+            print issuer, "lacks authority to remove blessed users"
 
     def bless_user(self, issuer, to_bless):
         """
