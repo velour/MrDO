@@ -10,7 +10,7 @@ class Configuration(object):
     NO_ONE = 0
     BLESSED = 1
     OP = 2
-    
+
     def __init__(self,settings):
         """
         Create an object representing the configuration of MrDo
@@ -81,7 +81,14 @@ class Configuration(object):
         """
         Adds a user to the list of IRC_UNAME users, those that can start / stop servers
         """
-        raise Exception("Stub: add_user")
+        if self._get_auth_level(issuer) == Configuration.OP:
+            if to_add in self.settings[Configuration.IRC_BLESSD]:
+                print to_add, "already a user. Not adding them."
+            else:
+                self.settings[Configuration.IRC_BLESSD].append(to_add)
+                print issuer, "Successfully added", to_add
+        else:
+            print issuer, "lacks authority to add blessed users."
 
     def rem_user(self, issuer, to_add):
         """
