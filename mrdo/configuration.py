@@ -5,7 +5,10 @@ class Configuration(object):
     IRC_PASSWD = 'IRC_PASSWORD'
     IRC_UNAME  = 'IRC_USER_NAME'
     IRC_BLESSD = 'IRC_BLESSED_USERS' ## those that can start / stop the server
-    IRC_OPS    = 'IRC_OPS' ## those that can bless, unbless users
+    IRC_OPS    = 'IRC_OPS'           ## those that can bless, unbless users
+    IRC_SERVER = 'IRC_SERVER'
+    IRC_CHAN   = 'IRC_CHAN'
+    IRC_PORT   = 'IRC_PORT'
 
     NO_ONE = 0
     BLESSED = 1
@@ -63,8 +66,25 @@ class Configuration(object):
         if not self.settings.has_key(Configuration.IRC_OPS):
             print "No operators for Mr. Do"
             ret = False
-
+        if not self.settings.has_key(Configuration.IRC_SERVER):
+            print "No IRC Server for Mr. Do to connect to."
+            ret = False
+        if not self.settings.has_key(Configuration.IRC_PORT):
+            print "No IRC Port for Mr. Do to join."
+            ret = False
+        if not self.settings.has_key(Configuration.IRC_CHAN):
+            print "No IRC Channel for Mr. Do to join."
+            ret = False
         return ret
+
+    def _set_server(self, server):
+        self.settings[Configuration.IRC_SERVER] = server
+
+    def _set_chan(self, chan):
+        self.settings[Configuration.IRC_CHAN] = chan
+
+    def _set_port(self, port):
+        self.settings[Configuration.IRC_PORT] = port
 
     def _get_auth_level(self, user):
         """
