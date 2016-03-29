@@ -8,9 +8,9 @@ class Configuration(object):
     IRC_OPS    = 'IRC_OPS' ## those that can bless, unbless users
 
     NO_ONE = 0
-    USER = 1
-    BLESSED = 2
-
+    BLESSED = 1
+    OP = 2
+    
     def __init__(self,settings):
         """
         Create an object representing the configuration of MrDo
@@ -70,7 +70,12 @@ class Configuration(object):
         """
         Returns the authorization level of the user
         """
-        raise Exception("stub: _is_authorized")
+        if user in self.settings[Configuration.IRC_OPS]:
+            return Configuration.OP
+        elif user in self.settings[Configuration.IRC_BLESSD]:
+            return Configuration.BLESSED
+        else:
+            return Configuration.NO_ONE
 
     def add_user(self, issuer, to_add):
         """
