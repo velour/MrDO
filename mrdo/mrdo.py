@@ -5,15 +5,22 @@ import irc.client
 import irc.modes
 from irc.dict import IRCDict
 from irc.bot import SingleServerIRCBot, ServerSpec
+from configuration import Configuration
 
-default_server = ServerSpec("someIrcServer", password = "notthepassword")
+
+def serverOfConfig(config):
+    return ServerSpec(config.settings[Configuration.IRC_SERVER],
+                      config.settings[Configuration.IRC_PASSWD])
 
 class MrDo(SingleServerIRCBot):
 
-    def __init__(self, server=default_server):
-        SingleServerIRCBot.__init__(self,[server], "MrDo", "MrDo")
-        self.operators = ["some", "secret", "powerful", "people"]
-        self.channel = "#aChannelToConnectTo"
+    def __init__(self, config):
+        SingleServerIRCBot.__init__(self,
+                                    [serverOfConfig(config)],
+                                    config[Configuration.IRC_UNAME],
+                                    config[Configuration.IRC_UNAME])
+        self.config = config
+        self.channel = config.settings[Configuration.IRC_CHAN]
 
     def on_welcome(self,c,e):
         c.join(self.channel)
@@ -26,5 +33,5 @@ class MrDo(SingleServerIRCBot):
 
     def on_pubmsg(self,c,e):
         a = e.arguments[0].split(':', 1)
-        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower("MrDo"):
+        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.config.settings[Configuration.IRC_UNAME]):
             print "got command", a[1].strip()
