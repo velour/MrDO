@@ -81,4 +81,22 @@ def Configuration(object):
         """
         Run a sanity check on the object to make sure it's worth saving
         """
-        raise Exception("stub: validate")
+        ret = True
+
+        if not self.settings.has_key(DO_API_KEY):
+            print "No Digital Ocean API Key"
+            ret = False
+        if not self.settings.has_key(IRC_PASSWD):
+            print "No IRC Password for Mr. Do"
+            ret = False
+        if not self.settings.has_key(IRC_UNAME):
+            print "No User Name for Mr. Do"
+            ret = False
+        if not self.settings.has_key(IRC_BLESSD):
+            print "No list of users for Mr. Do"
+            ret = False
+        if not self.settings.has_key(IRC_OPS):
+            print "No operators for Mr. Do"
+            ret = False
+
+        return ret
