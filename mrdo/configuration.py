@@ -141,4 +141,3 @@ class Configuration(object):
             print "Set Digital Ocean API key for", issuer
         else:
             print issuer, "can't start a Digital Ocean droplet, so I'm not taking their key."
-
