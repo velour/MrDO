@@ -7,6 +7,14 @@ from irc.dict import IRCDict
 from irc.bot import SingleServerIRCBot, ServerSpec
 from configuration import Configuration
 
+# Basic commands
+from command import help, running_droplet
+# User management commands
+from command import op_user, unop_user, add_user, rem_user
+# Droplet management commands
+from command import add_api_key, stop_droplet, list_images,
+                    load_most_recent_image, load_named_image
+
 
 def serverOfConfig(config):
     return ServerSpec(config.settings[Configuration.IRC_SERVER],
