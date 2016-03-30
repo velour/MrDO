@@ -39,6 +39,52 @@ class MrDo(SingleServerIRCBot):
     def on_privmsg(self,c,e):
         print "got private message", e.arguments[0]
 
+    def _respond(self, chan, message):
+        pass
+
+    def _handle_msg(self, response_chan, user, cmd):
+        """
+        Dispatches the appropriate command
+        """
+        if cmd == []:
+            return
+        cmd_name = cmd[0]
+        if cmd_name == help.keyword:
+            pass
+        elif cmd_name == running_droplet.keyword:
+            pass
+        elif cmd_name == op_user.keyword:
+            pass
+        elif cmd_name == unop_user.keyword:
+            pass
+        elif cmd_name == add_user.keyword:
+            pass
+        elif cmd_name == rem_user.keyword:
+            pass
+        elif cmd_name == add_api_key.keyword:
+            pass
+        elif cmd_name == stop_droplet.keyword:
+            pass
+        elif cmd_name == list_images.keyword:
+            pass
+        elif cmd_name == load_most_recent_image.keyword:
+            pass
+        elif cmd_name == load_named_image.keyword:
+            pass
+        else: ## No recognized keyword
+            self._help(response_chan, user, [])
+
+    def _help(self, response_chan, user, args):
+        if help.canIssue(self.config, user):
+            if args:
+                for arg in args:
+                    ## look for arg as keyword in list of commands
+                    ## print its long desc on the response chan if you find it
+                    ## otherwise, respond with "didn't find command arg
+                    pass
+            else:
+                self._respond(response_chan, help.shortDesc)
+
     def on_pubmsg(self,c,e):
         a = e.arguments[0].split(':', 1)
         if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.config.settings[Configuration.IRC_UNAME]):
