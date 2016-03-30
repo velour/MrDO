@@ -51,6 +51,7 @@ add_user = Command("add_user",
                    ["add_user <user>"]
                    )
 rem_user = Command("rem_user",
+                   "Removes user from list of users.",
                    """Removes user privledges from a user.  This
                    revokes their ability to start and stop droplets
                    and games, so long as that user is not also an
@@ -59,17 +60,43 @@ rem_user = Command("rem_user",
                    )
 
 # Droplet Manipulation
-add_api_key = None
-stop_droplet = None
-list_images = None
+add_api_key = Command("add_key",
+                      "Associates a Digital Ocean API Key with a user name.",
+                      """All droplet tasks require an API key to
+                      accomplish.  The key is used to authenticate the
+                      user for a digital ocean account or team.
+                      Authentication lets us list and start
+                      droplets.""",
+                      ["add_key <string>, best done in a private message."],
+                      auth = Configuration.BLESSED)
+stop_droplet = Command("stop_droplet",
+                       "Cleanly shut down the droplet.",
+                       """Powers off the droplet, takes an image of
+                       the machine's state, and saves that image to
+                       the Digital Ocean account.  The droplet is then
+                       destroyed to save money.  The whole process can
+                       take around 15 minutes.""",
+                       ["stop_droplet", "stop_droplet <image name>"],
+                       auth = Configuration.BLESSED)
+
+list_images = Command("list_images",
+                      "List all Digital Ocean images",
+                      """Lists all of the Digital Ocean images
+                      associated with the user's API key.  These are
+                      exactly the images that will be considered as
+                      valid targets when attempting to load up an
+                      image.""",
+                      ["list_images"],
+                      auth = Configuration.BLESSED)
 load_most_recent_image = None
 load_named_image = None
 running_droplet = None
 
 # Game Server Management
+### Not going to flesh these out for a bit, since I've not started
+### Writing this portion of Mr. Do
 list_inits = None
 list_ongoing = None
 start_server = None
 backup_server = None
 stop_server = None
-
