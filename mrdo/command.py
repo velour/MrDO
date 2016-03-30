@@ -88,9 +88,38 @@ list_images = Command("list_images",
                       image.""",
                       ["list_images"],
                       auth = Configuration.BLESSED)
-load_most_recent_image = None
-load_named_image = None
-running_droplet = None
+
+load_most_recent_image = Command("load_recent",
+                                 "Starts a droplet based on the most recent image.",
+                                 """Starts a droplet based on the most
+                                 recent Digital Ocean image associated
+                                 with the user's API Key.  If two
+                                 images have exactly the same time
+                                 associated with them, this fails as
+                                 'most recent' is ill-defined in that
+                                 case.  After the image is started,
+                                 the IP address will be emitted by the
+                                 bot.""",
+                                 ["load_recent"],
+                                 auth = Configuration.BLESSED)
+load_named_image = Command("load_image",
+                           "Starts a droplet from the named image.",
+                           """Starts a droplet of the named image from
+                           the list of Digital Ocean images associated
+                           with the user's key.  If no such image
+                           exists, no droplet is started.  Digital
+                           Ocean doesn't permit multiple images with
+                           the same name for a single account.""",
+                           ["load_image <name>"],
+                           auth = Configuration.BLESSED)
+running_droplet = Command("stats",
+                          "Display some statistics about the running
+                          droplet."  """Shows when the server was
+                          started, current run time, and an estimate
+                          of the cost to run the server since it was
+                          spun up.""",
+                          ["stats"],
+                          auth = Configuration.NO_ONE)
 
 # Game Server Management
 ### Not going to flesh these out for a bit, since I've not started
