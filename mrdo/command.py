@@ -1,11 +1,12 @@
 from configuration import Configuration
 
 class Command(object):
-    def __init__(self, keyword, shortDesc, longDesc, auth=Configuration.OP):
+    def __init__(self, keyword, shortDesc, longDesc, usage, auth=Configuration.OP):
         self.auth = auth
         self.keyword = keyword
         self.shortDesc = shortDesc
         self.longDesc = longDesc
+        self.usage = usage
 
     def canIssue(self, config, issuer):
         """
@@ -22,6 +23,7 @@ help = Command("help",
                """List all commands the bot can accept, or ask for
                help on a specific command see detailed information
                along with a usage string.""",
+               ["help", "help <command>"],
                auth = Configuration.NO_ONE)
 
 # User Management
@@ -30,7 +32,9 @@ op_user = Command("give_ops",
                   """ Promotes a single user to operator status.
                   Operators can give other users the ability to start
                   and stop droplets or games (bless), and can start
-                  and stop droplets and games themselves.""")
+                  and stop droplets and games themselves.""",
+                  ["give_ops <user>"]
+                  )
 
 unop_user = Command("take_ops",
                     "Remove user from OP list.",
@@ -38,15 +42,21 @@ unop_user = Command("take_ops",
                     operators. Revokes their ability to promote users
                     to operator or blessed status..  If they are not
                     seperately users, this also removes their ability
-                    to start and stop droplets and games.""")
+                    to start and stop droplets and games.""",
+                    ["take_ops <user>"]
+                    )
 add_user = Command("add_user",
                    "Add user to the list of users.",
-                   """Users can start and stop droplets and games.""")
+                   """Users can start and stop droplets and games.""",
+                   ["add_user <user>"]
+                   )
 rem_user = Command("rem_user",
                    """Removes user privledges from a user.  This
                    revokes their ability to start and stop droplets
                    and games, so long as that user is not also an
-                   operator.""")
+                   operator.""",
+                   ["rem_user <user>"]
+                   )
 
 # Droplet Manipulation
 add_api_key = None
