@@ -45,11 +45,13 @@ unop_user = Command("take_ops",
                     to start and stop droplets and games.""",
                     ["take_ops <user>"]
                     )
+
 add_user = Command("add_user",
                    "Add user to the list of users.",
                    """Users can start and stop droplets and games.""",
                    ["add_user <user>"]
                    )
+
 rem_user = Command("rem_user",
                    "Removes user from list of users.",
                    """Removes user privledges from a user.  This
@@ -69,6 +71,7 @@ add_api_key = Command("add_key",
                       droplets.""",
                       ["add_key <string>, best done in a private message."],
                       auth = Configuration.BLESSED)
+
 stop_droplet = Command("stop_droplet",
                        "Cleanly shut down the droplet.",
                        """Powers off the droplet, takes an image of
@@ -102,6 +105,7 @@ load_most_recent_image = Command("load_recent",
                                  bot.""",
                                  ["load_recent"],
                                  auth = Configuration.BLESSED)
+
 load_named_image = Command("load_image",
                            "Starts a droplet from the named image.",
                            """Starts a droplet of the named image from
@@ -112,6 +116,7 @@ load_named_image = Command("load_image",
                            the same name for a single account.""",
                            ["load_image <name>"],
                            auth = Configuration.BLESSED)
+
 running_droplet = Command("stats",
                           "Display some statistics about the running
                           droplet."  """Shows when the server was
