@@ -86,7 +86,7 @@ class Configuration(object):
     def _set_port(self, port):
         self.settings[Configuration.IRC_PORT] = port
 
-    def _get_auth_level(self, user):
+    def get_auth_level(self, user):
         """
         Returns the authorization level of the user
         """
@@ -101,7 +101,7 @@ class Configuration(object):
         """
         Adds a user to the list of IRC_UNAME users, those that can start / stop servers
         """
-        if self._get_auth_level(issuer) == Configuration.OP:
+        if self.get_auth_level(issuer) == Configuration.OP:
             if to_add in self.settings[Configuration.IRC_BLESSD]:
                 print to_add, "already a user. Not adding them."
             else:
@@ -114,7 +114,7 @@ class Configuration(object):
         """
         Removes a name from the list of IRC_UNAME, those that can start / stop servers
         """
-        if self._get_auth_level(issuer) == Configuration.OP:
+        if self.get_auth_level(issuer) == Configuration.OP:
             if to_rem in self.settings[Configuration.IRC_BLESSD]:
                 self.settings[Configuration.IRC_BLESSD].remove(to_rem)
                 print to_rem, "successfully removed from blessed users by", issuer
@@ -128,7 +128,7 @@ class Configuration(object):
         Gives ops to user, allowing them to add other users to the list of folks
         who can start and stop servers.
         """
-        if self._get_auth_level(issuer) == Configuration.OP:
+        if self.get_auth_level(issuer) == Configuration.OP:
             if to_add in self.settings[Configuration.IRC_OPS]:
                 print to_add, "already an op. Not adding them."
             else:
@@ -142,7 +142,7 @@ class Configuration(object):
         Removes ops from a user.
         Issuer needs to be op, the person to be removed also needs to have ops.
         """
-        if self._get_auth_level(issuer) == Configuration.OP:
+        if self.get_auth_level(issuer) == Configuration.OP:
             if to_rem in self.settings[Configuration.IRC_OPS]:
                 self.settings[Configuration.IRC_OPS].remove(to_rem)
                 print to_rem, "successfully removed from ops", issuer
@@ -156,7 +156,7 @@ class Configuration(object):
         Adds a digital ocean API key to the assoc list of users -> api keys
         """
         ## structure of DO_API_KEYS is an assoc list, issuer -> API_KEY, one per
-        if self._get_auth_level(issuer) > NO_ONE:
+        if self.get_auth_level(issuer) > NO_ONE:
             self.settings[Configuration.DO_API_KEY][issuer] = key_string
             print "Set Digital Ocean API key for", issuer
         else:
