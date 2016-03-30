@@ -25,10 +25,28 @@ help = Command("help",
                auth = Configuration.NO_ONE)
 
 # User Management
-op_user = None
-unop_user = None
-add_user = None
-rem_user = None
+op_user = Command("give_ops",
+                  "Promote user to OP.",
+                  """ Promotes a single user to operator status.
+                  Operators can give other users the ability to start
+                  and stop droplets or games (bless), and can start
+                  and stop droplets and games themselves.""")
+
+unop_user = Command("take_ops",
+                    "Remove user from OP list.",
+                    """ Removes a user from the list of
+                    operators. Revokes their ability to promote users
+                    to operator or blessed status..  If they are not
+                    seperately users, this also removes their ability
+                    to start and stop droplets and games.""")
+add_user = Command("add_user",
+                   "Add user to the list of users.",
+                   """Users can start and stop droplets and games.""")
+rem_user = Command("rem_user",
+                   """Removes user privledges from a user.  This
+                   revokes their ability to start and stop droplets
+                   and games, so long as that user is not also an
+                   operator.""")
 
 # Droplet Manipulation
 add_api_key = None
