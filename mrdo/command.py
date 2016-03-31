@@ -134,3 +134,5 @@ list_ongoing = None
 start_server = None
 backup_server = None
 stop_server = None
+
+commands = [help, op_user, unop_user, add_user, rem_user, add_api_key, stop_droplet, list_images, load_most_recent_image, load_named_image, running_droplet]

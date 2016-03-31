@@ -13,6 +13,8 @@ from command import help, running_droplet
 from command import op_user, unop_user, add_user, rem_user
 # Droplet management commands
 from command import add_api_key, stop_droplet, list_images, load_most_recent_image, load_named_image
+# a list of all commands
+from command import commands
 
 
 def serverOfConfig(config):
@@ -60,7 +62,12 @@ class MrDo(SingleServerIRCBot):
         self._respond(user, response)
 
     def _help(self, chan, cmd):
-        pass
+        if len(cmd) == 1:
+            ## Short help description
+            self_respond(chan, help.shortDesc)
+        else:
+            ## long descriptions
+            pass
 
     def _handle_msg(self, response_chan, user, cmd):
         """
