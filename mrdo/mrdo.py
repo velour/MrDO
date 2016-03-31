@@ -141,7 +141,9 @@ class MrDo(SingleServerIRCBot):
         """
         Associate a Digital Ocean API key with a given user
         """
-        pass
+        key = cmd[1]
+        self.config.add_do_api_key(user, key)
+        self._respond(rc, "Set key for " + user)
 
     def _stop_droplet(self, rc, user, cmd):
         """
