@@ -97,7 +97,12 @@ class MrDo(SingleServerIRCBot):
         Promote the user to Operator
         """
         ## User has already been authenticated.
-        pass
+        cmd = cmd[1:]
+        ret_string = "Gave ops to "
+        for uname in cmd:
+            self.config.op_user(user, uname)
+            ret_string = "%s %s", (ret_string, uname)
+        self._resport(rc, ret_string)
 
     def _unop_user(self, rc, user, cmd):
         """
