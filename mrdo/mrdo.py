@@ -61,13 +61,43 @@ class MrDo(SingleServerIRCBot):
         response = "%s lacked privledges to issue %s", % (user, cmd)
         self._respond(user, response)
 
-    def _help(self, chan, cmd):
+    def _help(self, rc, user, cmd):
         if len(cmd) == 1:
             ## Short help description
-            self_respond(chan, help.shortDesc)
+            self_respond(rc, help.shortDesc)
         else:
-            ## long descriptions
+            ## long description of commands
             pass
+
+    def _running_droplet(self, rc, user, cmd):
+        pass
+
+    def _op_user(self, rc, user, cmd):
+        pass
+
+    def _unop_user(self, rc, user, cmd):
+        pass
+
+    def _add_user(self, rc, user, cmd):
+        pass
+
+    def _rem_user(self, rc, user, cmd):
+        pass
+
+    def _add_api_key(self, rc, user, cmd):
+        pass
+
+    def _stop_droplet(self, rc, user, cmd):
+        pass
+
+    def _list_images(self, rc, user, cmd):
+        pass
+
+    def _load_most_recent_image(self, rc, user, cmd):
+        pass
+
+    def _running_droplet(self, rc, user, cmd):
+        pass
 
     def _handle_msg(self, response_chan, user, cmd):
         """
