@@ -54,14 +54,24 @@ class MrDo(SingleServerIRCBot):
             self._handle_msg(chan, user,cmd)
 
     def _respond(self, chan, message):
+        """
+        Prints the given message to the given channel
+        """
         self.connection.notice(chan, message)
-        pass
 
     def _insufficient_privledge(self, user, cmd):
+        """
+        Tells the user privately that they lack privledges to run the issued command
+        """
         response = "%s lacked privledges to issue %s", % (user, cmd)
         self._respond(user, response)
 
     def _help(self, rc, user, cmd):
+        """
+        Runs the help command.  If it's just help, print short
+        description of all commands, otherwise print the long
+        description of the supplied commands.
+        """
         if len(cmd) == 1:
             ## Short help description
             self_respond(rc, help.shortDesc)
