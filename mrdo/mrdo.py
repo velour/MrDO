@@ -72,7 +72,14 @@ class MrDo(SingleServerIRCBot):
         description of all commands, otherwise print the long
         description of the supplied commands.
         """
-        pass
+        cmd = cmd[1:]
+        if cmd == []:
+            ## print short description of every command
+            for c in commands:
+                self._respond(rc, c.shortDesc)
+        else:
+            for c in cmd:
+                self._respond(rc, c.longDesc)
 
     def _running_droplet(self, rc, user, cmd):
         """
