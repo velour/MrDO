@@ -31,6 +31,7 @@ class MrDo(SingleServerIRCBot):
                                     config.settings[Configuration.IRC_UNAME])
         self.config = config
         self.channel = config.settings[Configuration.IRC_CHAN]
+        self.droplet = None
 
     def on_welcome(self,c,e):
         c.join(self.channel)
@@ -86,12 +87,16 @@ class MrDo(SingleServerIRCBot):
         Respond with some simple information about the running droplet.  It's name,
         how long it's been running, which image it was spawned from.
         """
-        pass
+        if self.droplet:
+            pass
+        else:
+            self._respond(rc, "There is no running droplet.")
 
     def _op_user(self, rc, user, cmd):
         """
         Promote the user to Operator
         """
+        ## User has already been authenticated.
         pass
 
     def _unop_user(self, rc, user, cmd):
