@@ -201,14 +201,3 @@ class MrDo(SingleServerIRCBot):
                 self._insufficient_privledge(user, cmd)
         else: ## No recognized keyword
             self._respond(user, "I don't recognize that command. Try issuing 'help'.")
-
-    def _help(self, response_chan, user, args):
-        if help.canIssue(self.config, user):
-            if args:
-                for arg in args:
-                    ## look for arg as keyword in list of commands
-                    ## print its long desc on the response chan if you find it
-                    ## otherwise, respond with "didn't find command arg
-                    pass
-            else:
-                self._respond(response_chan, help.shortDesc)
