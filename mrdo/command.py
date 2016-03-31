@@ -118,8 +118,8 @@ load_named_image = Command("load_image",
                            auth = Configuration.BLESSED)
 
 running_droplet = Command("stats",
-                          "Display some statistics about the running
-                          droplet."  """Shows when the server was
+                          "Display some statistics about the running droplet.",
+                          """Shows when the server was
                           started, current run time, and an estimate
                           of the cost to run the server since it was
                           spun up.""",
