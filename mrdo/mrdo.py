@@ -72,41 +72,67 @@ class MrDo(SingleServerIRCBot):
         description of all commands, otherwise print the long
         description of the supplied commands.
         """
-        if len(cmd) == 1:
-            ## Short help description
-            self_respond(rc, help.shortDesc)
-        else:
-            ## long description of commands
-            pass
+        pass
 
     def _running_droplet(self, rc, user, cmd):
+        """
+        Respond with some simple information about the running droplet.  It's name,
+        how long it's been running, which image it was spawned from.
+        """
         pass
 
     def _op_user(self, rc, user, cmd):
+        """
+        Promote the user to Operator
+        """
         pass
 
     def _unop_user(self, rc, user, cmd):
+        """
+        Revoke a user's operator privledges
+        """
         pass
 
     def _add_user(self, rc, user, cmd):
+        """
+        Bless a user as being able to start, stop droplets
+        """
         pass
 
     def _rem_user(self, rc, user, cmd):
+        """
+        Remove a user's droplet starting, stopping privledges
+        """
         pass
 
     def _add_api_key(self, rc, user, cmd):
+        """
+        Associate a Digital Ocean API key with a given user
+        """
         pass
 
     def _stop_droplet(self, rc, user, cmd):
+        """
+        Stop a droplet, save it's image
+        """
         pass
 
     def _list_images(self, rc, user, cmd):
+        """
+        list all images associated with the issuer's API key
+        """
         pass
 
     def _load_most_recent_image(self, rc, user, cmd):
+        """
+        load the most recent image associated with the issuer's API key as a droplet
+        """
         pass
 
-    def _running_droplet(self, rc, user, cmd):
+    def _load_named_image(self, rc, user, cmd):
+        """
+        Start the named image as a new droplet
+        """
         pass
 
     def _handle_msg(self, response_chan, user, cmd):
