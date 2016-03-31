@@ -98,17 +98,22 @@ class MrDo(SingleServerIRCBot):
         """
         ## User has already been authenticated.
         cmd = cmd[1:]
-        ret_string = "Gave ops to "
+        ret_string = "Gave ops to"
         for uname in cmd:
             self.config.op_user(user, uname)
-            ret_string = "%s %s", (ret_string, uname)
+            ret_string = "%s %s" % (ret_string, uname)
         self._resport(rc, ret_string)
 
     def _unop_user(self, rc, user, cmd):
         """
         Revoke a user's operator privledges
         """
-        pass
+        cmd = cmd[1:]
+        ret_string = "Removed ops from"
+        for uname in cmd:
+            self.config.unop_user(user, uname)
+            ret_string = "%s %s" % (ret_string, uname)
+        self._report(rc, ret_string)
 
     def _add_user(self, rc, user, cmd):
         """
