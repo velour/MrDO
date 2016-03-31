@@ -119,13 +119,23 @@ class MrDo(SingleServerIRCBot):
         """
         Bless a user as being able to start, stop droplets
         """
-        pass
+        cmd = cmd[1:]
+        ret_string = "Blessed"
+        for uname in cmd:
+            self.config.add_user(user, uname)
+            ret_string = "%s %s" % (ret_string, uname)
+        self._resport(rc, ret_string)
 
     def _rem_user(self, rc, user, cmd):
         """
         Remove a user's droplet starting, stopping privledges
         """
-        pass
+        cmd = cmd[1:]
+        ret_string = "Cursed"
+        for uname in cmd:
+            self.config.rem_user(user, uname)
+            ret_string = "%s %s" % (ret_string, uname)
+        self._resport(rc, ret_string)
 
     def _add_api_key(self, rc, user, cmd):
         """
