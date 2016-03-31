@@ -54,6 +54,10 @@ class MrDo(SingleServerIRCBot):
         self.connection.notice(chan, message)
         pass
 
+    def _insufficient_privledge(self, user, cmd):
+        response = "%s lacked privledges to issue %s", % (user, cmd)
+        self._respond(user, response)
+
     def _handle_msg(self, response_chan, user, cmd):
         """
         Dispatches the appropriate command
@@ -62,28 +66,62 @@ class MrDo(SingleServerIRCBot):
         if cmd == []:
             return
         cmd_name = cmd[0]
+        cmd = None
         if cmd_name == help.keyword:
-            pass
+            if help.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == running_droplet.keyword:
-            pass
+            if running_droplet.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == op_user.keyword:
-            pass
+            if op_user.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == unop_user.keyword:
-            pass
+            if unop_user.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == add_user.keyword:
-            pass
+            if add_user.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == rem_user.keyword:
-            pass
+            if rem_user.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == add_api_key.keyword:
-            pass
+            if add_api_key.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == stop_droplet.keyword:
-            pass
+            if stop_droplet.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == list_images.keyword:
-            pass
+            if list_images.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == load_most_recent_image.keyword:
-            pass
+            if load_most_recent_image.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         elif cmd_name == load_named_image.keyword:
-            pass
+            if load_named_image.canIssue(user, self.config):
+                pass
+            else:
+                self._insufficient_privledge(user, cmd)
         else: ## No recognized keyword
             self._respond(user, "I don't recognize that command. Try issuing 'help'.")
 
