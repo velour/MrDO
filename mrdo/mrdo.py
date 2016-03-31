@@ -39,7 +39,7 @@ class MrDo(SingleServerIRCBot):
     def on_privmsg(self,c,e):
         user = e.source.nick
         command = e.arguments[0]
-        print user, command
+        command = command.split(' ', 1)
         self._handle_msg(user, user, command)
 
     def on_pubmsg(self,c,e):
@@ -48,6 +48,7 @@ class MrDo(SingleServerIRCBot):
             cmd = a[1].strip()
             user = e.source.nick
             chan = e.target
+            cmd = cmd.split(' ', 1)
             self._handle_msg(chan, user,cmd)
 
     def _respond(self, chan, message):
@@ -57,6 +58,9 @@ class MrDo(SingleServerIRCBot):
     def _insufficient_privledge(self, user, cmd):
         response = "%s lacked privledges to issue %s", % (user, cmd)
         self._respond(user, response)
+
+    def _help(self, chan, cmd):
+        pass
 
     def _handle_msg(self, response_chan, user, cmd):
         """
@@ -69,7 +73,7 @@ class MrDo(SingleServerIRCBot):
         cmd = None
         if cmd_name == help.keyword:
             if help.canIssue(user, self.config):
-                pass
+                self._help(response_chan,cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == running_droplet.keyword:
