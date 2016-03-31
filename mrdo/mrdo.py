@@ -12,21 +12,21 @@ from command import help, running_droplet
 # User management commands
 from command import op_user, unop_user, add_user, rem_user
 # Droplet management commands
-from command import add_api_key, stop_droplet, list_images,
-                    load_most_recent_image, load_named_image
+from command import add_api_key, stop_droplet, list_images, load_most_recent_image, load_named_image
 
 
 def serverOfConfig(config):
     return ServerSpec(config.settings[Configuration.IRC_SERVER],
-                      config.settings[Configuration.IRC_PASSWD])
+                      port=config.settings[Configuration.IRC_PORT],
+                      password=config.settings[Configuration.IRC_PASSWD])
 
 class MrDo(SingleServerIRCBot):
 
     def __init__(self, config):
         SingleServerIRCBot.__init__(self,
                                     [serverOfConfig(config)],
-                                    config[Configuration.IRC_UNAME],
-                                    config[Configuration.IRC_UNAME])
+                                    config.settings[Configuration.IRC_UNAME],
+                                    config.settings[Configuration.IRC_UNAME])
         self.config = config
         self.channel = config.settings[Configuration.IRC_CHAN]
 
@@ -37,15 +37,28 @@ class MrDo(SingleServerIRCBot):
         print c, e
 
     def on_privmsg(self,c,e):
-        print "got private message", e.arguments[0]
+        user = e.source.nick
+        command = e.arguments[0]
+        print user, command
+        self._handle_msg(user, user, command)
+
+    def on_pubmsg(self,c,e):
+        a = e.arguments[0].split(':', 1)
+        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.config.settings[Configuration.IRC_UNAME]):
+            cmd = a[1].strip()
+            user = e.source.nick
+            chan = e.target
+            self._handle_msg(chan, user,cmd)
 
     def _respond(self, chan, message):
+        self.connection.notice(chan, message)
         pass
 
     def _handle_msg(self, response_chan, user, cmd):
         """
         Dispatches the appropriate command
         """
+        print user, "issued", cmd
         if cmd == []:
             return
         cmd_name = cmd[0]
@@ -72,7 +85,7 @@ class MrDo(SingleServerIRCBot):
         elif cmd_name == load_named_image.keyword:
             pass
         else: ## No recognized keyword
-            self._help(response_chan, user, [])
+            self._respond(user, "I don't recognize that command. Try issuing 'help'.")
 
     def _help(self, response_chan, user, args):
         if help.canIssue(self.config, user):
@@ -84,8 +97,3 @@ class MrDo(SingleServerIRCBot):
                     pass
             else:
                 self._respond(response_chan, help.shortDesc)
-
-    def on_pubmsg(self,c,e):
-        a = e.arguments[0].split(':', 1)
-        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.config.settings[Configuration.IRC_UNAME]):
-            print "got command", a[1].strip()
