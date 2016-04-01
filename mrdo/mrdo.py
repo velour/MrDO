@@ -169,7 +169,20 @@ class MrDo(SingleServerIRCBot):
         """
         Stop a droplet, save it's image
         """
-        pass
+        name = None
+        try:
+            name = cmd[1]
+        except:
+            pass
+        if self.manager:
+            if self.droplet:
+                self._respond(rc, "Tearing down the droplet, this may take a while.")
+                dropletManager.tearDown(self.manager, self.droplet, name=name)
+                self._respond(rc, "The droplet has been destroyed.")
+            else:
+                self._respond(rc, "No droplet to tear down.")
+        else:
+            self._respond(rc, "No manager to handle droplets.")
 
     def _list_images(self, rc, user, cmd):
         """
