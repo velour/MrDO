@@ -1,13 +1,6 @@
 import digitalocean
 import datetime
 
-keyFile = open("./config/digital-ocean-test-key")
-secretKey = keyFile.read()
-secretKey = secretKey.strip()
-
-manager = digitalocean.Manager(token=secretKey)
-
-
 def get_image_by_name(manager, name):
     """
     Manager is a digitalocean.Manager
@@ -70,13 +63,13 @@ def get_most_recent_image(manager):
         raise "start_most_recent_image: There is no most recent image!"
 
 
-def droplet_of_image(imagedict):
+def droplet_of_image(imagedict, manager):
     """
     Spin up a droplet from the specified image
     """
     imagedict.load() ## just in case we haven't yet, but I don't know that this has any effect for us?
     droplet = digitalocean.Droplet(
-        token=secretKey,
+        token=manager.token,
         name = imagedict.name,
         image = imagedict.id,
         region = 'nyc2', ## this should be pulled from the imagedict [JTT 21-03-16]

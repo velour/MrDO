@@ -3,6 +3,8 @@
 
 import irc.client
 import irc.modes
+import digitalocean
+import dropletManager
 from irc.dict import IRCDict
 from irc.bot import SingleServerIRCBot, ServerSpec
 from configuration import Configuration
@@ -34,6 +36,14 @@ class MrDo(SingleServerIRCBot):
         self.config = config
         self.channel = config.settings[Configuration.IRC_CHAN]
         self.droplet = None
+        self.manager = None
+        if self.config.settings[Configuration.DO_API_KEY]:
+            try:
+                key = self.config.settings[Configuration.DO_API_KEY]
+                if key:
+                    self.manager = digitalocean.Manager(token=key.strip())
+            except:
+                print "Couldn't setup a digital ocean manager. Key is bogus?"
 
     def on_welcome(self,c,e):
         c.join(self.channel)
@@ -145,8 +155,15 @@ class MrDo(SingleServerIRCBot):
         Associate a Digital Ocean API key with a given user
         """
         key = cmd[1]
-        self.config.add_do_api_key(user, key)
-        self._respond(rc, "Set key for " + user)
+        print key
+        try:
+            self.manager = digitalocean.Manager(token=key.strip())
+            print "manager set"
+            self.config.set_do_api_key(user, key)
+            print "key set"
+            self._respond(rc, "Set Digital Ocean key")
+        except:
+            self._respond(rc, "Failed to set Digital Ocean key")
 
     def _stop_droplet(self, rc, user, cmd):
         """
@@ -158,19 +175,52 @@ class MrDo(SingleServerIRCBot):
         """
         list all images associated with the issuer's API key
         """
-        pass
+        if self.manager:
+            images = self.manager.get_my_images()
+            imageList = ""
+            for image in images:
+                imageList = "%s %s" % (imageList, image.name)
+            self._respond(rc, imageList)
+        else:
+            self._respond(rc, "No manager / api key.  Can't list images.")
 
     def _load_most_recent_image(self, rc, user, cmd):
         """
         load the most recent image associated with the issuer's API key as a droplet
         """
-        pass
+        if self.manager:
+            if self.droplet == None:
+                try:
+                    image = dropletManager.get_most_recent_image(self.manager)
+                    self._respond(rc, ("Starting droplet of %s" % image.name))
+                    self.droplet = dropletManager.droplet_of_image(image, self.manager)
+                    self._respond(rc, "Droplet started.")
+                except:
+                    self._respond(rc, "Failed to start the droplet for some reason.")
+            else:
+                self._respond(rc, "There's a droplet running. Not starting a new one.")
+        else:
+            self._respond(rc, "No manager / api key.  Can't load an image.")
 
     def _load_named_image(self, rc, user, cmd):
         """
         Start the named image as a new droplet
         """
-        pass
+        if self.manager:
+            if self.droplet == None:
+                try:
+                    self._respond(rc, ("Trying to start %s" % cmd[1]))
+                    image = dropletManager.get_image_by_name(self.manager, cmd[1])
+                    self._respond(rc, ("Starting droplet of %s" % image.name))
+                    self.droplet = dropletManager.droplet_of_image(image, self.manager)
+                    self._respond(rc, "Droplet started.")
+                except:
+                    self._respond(rc, "Failed to start the droplet for some reason.")
+            else:
+                self._respond(rc, "There's a droplet running. Not starting a new one.")
+        else:
+            self._respond(rc, "No manager / api key.  Can't load an image.")
+
 
     def _handle_msg(self, response_chan, user, cmd):
         """
