@@ -151,13 +151,13 @@ class Configuration(object):
         else:
             print issuer, "lacks authority to unop users"
 
-    def add_do_api_key(self, issuer, key_string):
+    def set_do_api_key(self, issuer, key_string):
         """
         Adds a digital ocean API key to the assoc list of users -> api keys
         """
         ## structure of DO_API_KEYS is an assoc list, issuer -> API_KEY, one per
-        if self.get_auth_level(issuer) > NO_ONE:
-            self.settings[Configuration.DO_API_KEY][issuer] = key_string
-            print "Set Digital Ocean API key for", issuer
+        if self.get_auth_level(issuer) == Configuration.OP:
+            self.settings[Configuration.DO_API_KEY]= key_string
+            print "Set Digital Ocean API key"
         else:
-            print issuer, "can't start a Digital Ocean droplet, so I'm not taking their key."
+            print issuer, "can't set the key as they aren't an operator.."
