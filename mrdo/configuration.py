@@ -37,7 +37,7 @@ class Configuration(object):
         to_ret.settings[Configuration.CONFIG_PATH] = path
         return to_ret
 
-    def to_path(self, path):
+    def to_path(self, path=self.settings[Configuration.CONFIG_PATH]):
         """
         Convert the object to json and then stow it at path
         Will clobber any existing configuration file living there
@@ -93,6 +93,7 @@ class Configuration(object):
             else:
                 self.settings[Configuration.IRC_BLESSD].append(to_add)
                 print issuer, "Successfully added", to_add
+                self.to_path()
         else:
             print issuer, "lacks authority to add blessed users."
 
@@ -104,6 +105,7 @@ class Configuration(object):
             if to_rem in self.settings[Configuration.IRC_BLESSD]:
                 self.settings[Configuration.IRC_BLESSD].remove(to_rem)
                 print to_rem, "successfully removed from blessed users by", issuer
+                self.to_path()
             else:
                 print to_rem, "not a blessed user."
         else:
@@ -120,6 +122,7 @@ class Configuration(object):
             else:
                 self.settings[Configuration.IRC_OPS].append(to_add)
                 print issuer, "Successfully added", to_add
+                self.to_path()
         else:
             print issuer, "lacks authority to add ops."
 
@@ -132,6 +135,7 @@ class Configuration(object):
             if to_rem in self.settings[Configuration.IRC_OPS]:
                 self.settings[Configuration.IRC_OPS].remove(to_rem)
                 print to_rem, "successfully removed from ops", issuer
+                self.to_path()
             else:
                 print to_rem, "not an op."
         else:
@@ -145,5 +149,6 @@ class Configuration(object):
         if self.get_auth_level(issuer) == Configuration.OP:
             self.settings[Configuration.DO_API_KEY]= key_string
             print "Set Digital Ocean API key"
+            self.to_path()
         else:
             print issuer, "can't set the key as they aren't an operator.."
