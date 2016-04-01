@@ -178,6 +178,7 @@ class MrDo(SingleServerIRCBot):
             if self.droplet:
                 self._respond(rc, "Tearing down the droplet, this may take a while.")
                 dropletManager.tearDown(self.manager, self.droplet, name=name)
+                self.droplet = None
                 self._respond(rc, "The droplet has been destroyed.")
             else:
                 self._respond(rc, "No droplet to tear down.")
