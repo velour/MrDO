@@ -139,7 +139,7 @@ class Configuration(object):
 
     def set_do_api_key(self, issuer, key_string):
         """
-        Adds a digital ocean API key to the assoc list of users -> api keys
+        Set's configuratinos digital ocean API key
         """
         ## structure of DO_API_KEYS is an assoc list, issuer -> API_KEY, one per
         if self.get_auth_level(issuer) == Configuration.OP:
