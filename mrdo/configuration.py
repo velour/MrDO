@@ -123,7 +123,7 @@ class Configuration(object):
         else:
             print issuer, "lacks authority to remove blessed users"
 
-    def op_user(self, issuer, to_bless):
+    def op_user(self, issuer, to_add):
         """
         Gives ops to user, allowing them to add other users to the list of folks
         who can start and stop servers.
@@ -137,7 +137,7 @@ class Configuration(object):
         else:
             print issuer, "lacks authority to add ops."
 
-    def unop_user(self, issuer, to_curse):
+    def unop_user(self, issuer, to_rem):
         """
         Removes ops from a user.
         Issuer needs to be op, the person to be removed also needs to have ops.

@@ -105,7 +105,7 @@ class MrDo(SingleServerIRCBot):
         for uname in cmd:
             self.config.op_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
-        self._resport(rc, ret_string)
+        self._respond(rc, ret_string)
 
     def _unop_user(self, rc, user, cmd):
         """
@@ -127,7 +127,7 @@ class MrDo(SingleServerIRCBot):
         for uname in cmd:
             self.config.add_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
-        self._resport(rc, ret_string)
+        self._respond(rc, ret_string)
 
     def _rem_user(self, rc, user, cmd):
         """
@@ -138,7 +138,7 @@ class MrDo(SingleServerIRCBot):
         for uname in cmd:
             self.config.rem_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
-        self._resport(rc, ret_string)
+        self._respond(rc, ret_string)
 
     def _add_api_key(self, rc, user, cmd):
         """
@@ -187,52 +187,52 @@ class MrDo(SingleServerIRCBot):
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == running_droplet.keyword:
             if running_droplet.canIssue(self.config, user):
-                pass
+                self._running_droplet(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == op_user.keyword:
             if op_user.canIssue(self.config, user):
-                pass
+                self._op_user(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == unop_user.keyword:
             if unop_user.canIssue(self.config, user):
-                pass
+                self._unop_user(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == add_user.keyword:
             if add_user.canIssue(self.config, user):
-                pass
+                self._add_user(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == rem_user.keyword:
             if rem_user.canIssue(self.config, user):
-                pass
+                self._rem_user(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == add_api_key.keyword:
             if add_api_key.canIssue(self.config, user):
-                pass
+                self._add_api_key(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == stop_droplet.keyword:
             if stop_droplet.canIssue(self.config, user):
-                pass
+                self._stop_droplet(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == list_images.keyword:
             if list_images.canIssue(self.config, user):
-                pass
+                self._list_images(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == load_most_recent_image.keyword:
             if load_most_recent_image.canIssue(self.config, user):
-                pass
+                self._load_most_recent_image(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == load_named_image.keyword:
             if load_named_image.canIssue(self.config, user):
-                pass
+                self._load_named_image(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         else: ## No recognized keyword
