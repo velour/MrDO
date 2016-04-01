@@ -9,6 +9,7 @@ class Configuration(object):
     IRC_SERVER = 'IRC_SERVER'
     IRC_CHAN   = 'IRC_CHAN'
     IRC_PORT   = 'IRC_PORT'
+    CONFIG_PATH= 'CONFIG_PATH'
 
     NO_ONE = 0
     BLESSED = 1
@@ -31,6 +32,7 @@ class Configuration(object):
         to_ret = Configuration(settingsDict)
         if not to_ret._validate():
             raise Exception("Error loading configuration from " + path + ": invalid settings.")
+        to_ret.settings[Configuration.CONFIG_PATH] = path
         return to_ret
 
     def to_path(self, path):
@@ -38,11 +40,14 @@ class Configuration(object):
         Convert the object to json and then stow it at path
         Will clobber any existing configuration file living there
         """
+        prev_path = self.settings[Configuration.CONFIG_PATH]
+        self.settings[Configuration.CONFIG_PATH] = path
         if self._validate():
             f = open(path,'w')
             json.dump(self.settings, f, sort_keys=True, indent=4)
             f.close()
         else:
+            self.settings[Configuration.CONFIG_PATH] = prev_path
             raise Exception("Can't convert invalid configuration to JSON.")
 
     def _validate(self):
