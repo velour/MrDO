@@ -8,7 +8,7 @@ from irc.bot import SingleServerIRCBot, ServerSpec
 from configuration import Configuration
 
 # Basic commands
-from command import help, running_droplet
+from command import helpCmd, running_droplet
 # User management commands
 from command import op_user, unop_user, add_user, rem_user
 # Droplet management commands
@@ -16,6 +16,8 @@ from command import add_api_key, stop_droplet, list_images, load_most_recent_ima
 # a list of all commands
 from command import commands
 
+
+default_config = Configuration.from_path("./default_config.json")
 
 def serverOfConfig(config):
     return ServerSpec(config.settings[Configuration.IRC_SERVER],
@@ -42,7 +44,7 @@ class MrDo(SingleServerIRCBot):
     def on_privmsg(self,c,e):
         user = e.source.nick
         command = e.arguments[0]
-        command = command.split(' ', 1)
+        command = command.split(' ')
         self._handle_msg(user, user, command)
 
     def on_pubmsg(self,c,e):
@@ -51,7 +53,7 @@ class MrDo(SingleServerIRCBot):
             cmd = a[1].strip()
             user = e.source.nick
             chan = e.target
-            cmd = cmd.split(' ', 1)
+            cmd = cmd.split(' ')
             self._handle_msg(chan, user,cmd)
 
     def _respond(self, chan, message):
@@ -64,23 +66,24 @@ class MrDo(SingleServerIRCBot):
         """
         Tells the user privately that they lack privledges to run the issued command
         """
-        response = "%s lacked privledges to issue %s", % (user, cmd)
+        response = "%s lacked privledges to issue %s" % (user, cmd)
         self._respond(user, response)
 
-    def _help(self, rc, user, cmd):
+    def _helpCmd(self, rc, user, cmd):
         """
-        Runs the help command.  If it's just help, print short
+        Runs the helpCmd command.  If it's just helpCmd, print short
         description of all commands, otherwise print the long
         description of the supplied commands.
         """
         cmd = cmd[1:]
+        print cmd
         if cmd == []:
             ## print short description of every command
             for c in commands:
-                self._respond(rc, c.shortDesc)
+                self._respond(rc, ("%s: %s" % (c.keyword, c.shortDesc)))
         else:
             for c in cmd:
-                self._respond(rc, c.longDesc)
+                self._respond(rc, ("%s: %s" % (c.keyword, c.longDesc)))
 
     def _running_droplet(self, rc, user, cmd):
         """
@@ -177,59 +180,58 @@ class MrDo(SingleServerIRCBot):
         if cmd == []:
             return
         cmd_name = cmd[0]
-        cmd = None
-        if cmd_name == help.keyword:
-            if help.canIssue(user, self.config):
-                self._help(response_chan,cmd)
+        if cmd_name == helpCmd.keyword:
+            if helpCmd.canIssue(self.config, user):
+                self._helpCmd(response_chan, user, cmd)
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == running_droplet.keyword:
-            if running_droplet.canIssue(user, self.config):
+            if running_droplet.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == op_user.keyword:
-            if op_user.canIssue(user, self.config):
+            if op_user.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == unop_user.keyword:
-            if unop_user.canIssue(user, self.config):
+            if unop_user.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == add_user.keyword:
-            if add_user.canIssue(user, self.config):
+            if add_user.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == rem_user.keyword:
-            if rem_user.canIssue(user, self.config):
+            if rem_user.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == add_api_key.keyword:
-            if add_api_key.canIssue(user, self.config):
+            if add_api_key.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == stop_droplet.keyword:
-            if stop_droplet.canIssue(user, self.config):
+            if stop_droplet.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == list_images.keyword:
-            if list_images.canIssue(user, self.config):
+            if list_images.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == load_most_recent_image.keyword:
-            if load_most_recent_image.canIssue(user, self.config):
+            if load_most_recent_image.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)
         elif cmd_name == load_named_image.keyword:
-            if load_named_image.canIssue(user, self.config):
+            if load_named_image.canIssue(self.config, user):
                 pass
             else:
                 self._insufficient_privledge(user, cmd)

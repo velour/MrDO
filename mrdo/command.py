@@ -18,7 +18,7 @@ class Command(object):
         return self.keyword
 
 ## Commands
-help = Command("help",
+helpCmd = Command("help",
                "Get help using the bot.",
                """List all commands the bot can accept, or ask for
                help on a specific command see detailed information
@@ -135,4 +135,4 @@ start_server = None
 backup_server = None
 stop_server = None
 
-commands = [help, op_user, unop_user, add_user, rem_user, add_api_key, stop_droplet, list_images, load_most_recent_image, load_named_image, running_droplet]
+commands = [helpCmd, op_user, unop_user, add_user, rem_user, add_api_key, stop_droplet, list_images, load_most_recent_image, load_named_image, running_droplet]
