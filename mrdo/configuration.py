@@ -11,6 +11,8 @@ class Configuration(object):
     IRC_PORT   = 'IRC_PORT'
     CONFIG_PATH= 'CONFIG_PATH'
 
+    KEYS = [DO_API_KEY, IRC_PASSWD, IRC_UNAME, IRC_BLESSD, IRC_OPS, IRC_SERVER, IRC_CHAN, IRC_PORT, CONFIG_PATH ]
+
     NO_ONE = 0
     BLESSED = 1
     OP = 2
@@ -55,31 +57,10 @@ class Configuration(object):
         Run a sanity check on the object to make sure it's worth saving
         """
         ret = True
-
-        if not self.settings.has_key(Configuration.DO_API_KEY):
-            print "No Digital Ocean API Key"
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_PASSWD):
-            print "No IRC Password for Mr. Do"
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_UNAME):
-            print "No User Name for Mr. Do"
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_BLESSD):
-            print "No list of users for Mr. Do"
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_OPS):
-            print "No operators for Mr. Do"
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_SERVER):
-            print "No IRC Server for Mr. Do to connect to."
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_PORT):
-            print "No IRC Port for Mr. Do to join."
-            ret = False
-        if not self.settings.has_key(Configuration.IRC_CHAN):
-            print "No IRC Channel for Mr. Do to join."
-            ret = False
+        for key in Conifguration.KEYS:
+            if not self.settings.has_key(key):
+                print ("Missing %s" % key)
+                ret = False
         return ret
 
     def _set_server(self, server):
