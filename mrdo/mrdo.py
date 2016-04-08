@@ -255,10 +255,10 @@ class MrDo(SingleServerIRCBot):
         """
         Dispatches the appropriate command
         """
-        print user, "issued", cmd
-        if cmd == []:
+        print user, "issued", cmd_list
+        if cmd_list == []:
             return
-        cmd_name = cmd[0]
+        cmd_name = cmd_list[0]
         for in cmd in commands:
             if cmd_name == cmd.keyword:
                 try:
