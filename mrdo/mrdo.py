@@ -44,6 +44,21 @@ class MrDo(SingleServerIRCBot):
                     self.manager = digitalocean.Manager(token=key.strip())
             except:
                 print "Couldn't setup a digital ocean manager. Key is bogus?"
+        self._config_commands()
+
+    def _config_commands(self):
+        """
+        Sets up the actions to be done on every command issuance
+        """
+        helpCmd.do = self._helpCmd
+        op_user.do = self._op_user
+        unop_user.do = self._unop_user
+        add_user.do = self.add_user
+        rem_user.do = self.rem_user
+        add_api_key.do = self._add_api_key
+        stop_droplet.do = self._stop_droplet
+        load_most_recent_image.do = self._load_most_recent_image
+        load_named_image.do = self._load_named_image
 
     def on_welcome(self,c,e):
         c.join(self.channel)
@@ -236,7 +251,7 @@ class MrDo(SingleServerIRCBot):
             self._respond(rc, "No manager / api key.  Can't load an image.")
 
 
-    def _handle_msg(self, response_chan, user, cmd):
+    def _handle_msg(self, response_chan, user, cmd_list):
         """
         Dispatches the appropriate command
         """
@@ -244,60 +259,12 @@ class MrDo(SingleServerIRCBot):
         if cmd == []:
             return
         cmd_name = cmd[0]
-        if cmd_name == helpCmd.keyword:
-            if helpCmd.canIssue(self.config, user):
-                self._helpCmd(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == running_droplet.keyword:
-            if running_droplet.canIssue(self.config, user):
-                self._running_droplet(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == op_user.keyword:
-            if op_user.canIssue(self.config, user):
-                self._op_user(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == unop_user.keyword:
-            if unop_user.canIssue(self.config, user):
-                self._unop_user(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == add_user.keyword:
-            if add_user.canIssue(self.config, user):
-                self._add_user(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == rem_user.keyword:
-            if rem_user.canIssue(self.config, user):
-                self._rem_user(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == add_api_key.keyword:
-            if add_api_key.canIssue(self.config, user):
-                self._add_api_key(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == stop_droplet.keyword:
-            if stop_droplet.canIssue(self.config, user):
-                self._stop_droplet(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == list_images.keyword:
-            if list_images.canIssue(self.config, user):
-                self._list_images(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == load_most_recent_image.keyword:
-            if load_most_recent_image.canIssue(self.config, user):
-                self._load_most_recent_image(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        elif cmd_name == load_named_image.keyword:
-            if load_named_image.canIssue(self.config, user):
-                self._load_named_image(response_chan, user, cmd)
-            else:
-                self._insufficient_privledge(user, cmd)
-        else: ## No recognized keyword
-            self._respond(user, "I don't recognize that command. Try issuing 'help'.")
+        for in cmd in commands:
+            if cmd_name == cmd.keyword:
+                if cmd.canIssue(self.config, user):
+                    cmd.do(response_chan, user, cmd_list)
+                else:
+                    self._insufficient_privledege(user,cmd)
+                return
+        ## didn't exit early, so we've exhausted the list!
+        self._respond(user, "I don't recognize that command. Try issuing 'help'.")

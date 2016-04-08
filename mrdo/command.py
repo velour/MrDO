@@ -14,6 +14,9 @@ class Command(object):
         """
         return config.get_auth_level(issuer) >= self.auth
 
+    def do(self, rc, user, cmd):
+        print "Default do command. Something is wrong."
+
     def __str__(self):
         return self.keyword
 
