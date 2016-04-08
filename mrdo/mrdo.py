@@ -261,10 +261,14 @@ class MrDo(SingleServerIRCBot):
         cmd_name = cmd[0]
         for in cmd in commands:
             if cmd_name == cmd.keyword:
-                if cmd.canIssue(self.config, user):
-                    cmd.do(response_chan, user, cmd_list)
-                else:
-                    self._insufficient_privledege(user,cmd)
-                return
+                try:
+                    if cmd.canIssue(self.config, user):
+                        cmd.do(response_chan, user, cmd_list)
+                    else:
+                        self._insufficient_privledege(user,cmd)
+                    return
+                except:
+                    self._respond(response_chan,
+                                  "Command %s failed in an unexpected way." % cmd_name)
         ## didn't exit early, so we've exhausted the list!
         self._respond(user, "I don't recognize that command. Try issuing 'help'.")
