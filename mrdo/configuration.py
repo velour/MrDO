@@ -37,13 +37,14 @@ class Configuration(object):
         to_ret.settings[Configuration.CONFIG_PATH] = path
         return to_ret
 
-    def to_path(self, path=self.settings[Configuration.CONFIG_PATH]):
+    def to_path(self, path=None):
         """
         Convert the object to json and then stow it at path
         Will clobber any existing configuration file living there
         """
         prev_path = self.settings[Configuration.CONFIG_PATH]
-        self.settings[Configuration.CONFIG_PATH] = path
+        if path:
+            self.settings[Configuration.CONFIG_PATH] = path
         if self._validate():
             f = open(path,'w')
             json.dump(self.settings, f, sort_keys=True, indent=4)
