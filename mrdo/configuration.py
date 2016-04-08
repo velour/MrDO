@@ -1,5 +1,15 @@
 import json
 
+class Response(object):
+
+    def __init__(self, success=False, msg=None):
+        self.success = success
+        self.msg = msg
+
+    def __str__(self):
+        ret_str = "[%s]%s" % (self.success, self.msg)
+        return ret_str
+
 class Configuration(object):
     DO_API_KEY = 'DO_API_KEY'
     IRC_PASSWD = 'IRC_PASSWORD'
@@ -49,9 +59,10 @@ class Configuration(object):
             f = open(path,'w')
             json.dump(self.settings, f, sort_keys=True, indent=4)
             f.close()
+            return Response(success=True, msg = "Successfully saved configuration.")
         else:
             self.settings[Configuration.CONFIG_PATH] = prev_path
-            raise Exception("Can't convert invalid configuration to JSON.")
+            return Response(msg = "Failed to save configuration.")
 
     def _validate(self):
         """
@@ -90,13 +101,14 @@ class Configuration(object):
         """
         if self.get_auth_level(issuer) == Configuration.OP:
             if to_add in self.settings[Configuration.IRC_BLESSD]:
-                print to_add, "already a user. Not adding them."
+                return Response(msg = (to_add + " already a user. Not adding them."))
             else:
                 self.settings[Configuration.IRC_BLESSD].append(to_add)
-                print issuer, "Successfully added", to_add
+                toRet = Response(success=True, msg = ("%s Successfully added %s" % (issuer, to_add)))
                 self.to_path()
+                return toRet
         else:
-            print issuer, "lacks authority to add blessed users."
+            return Response(msg = (issuer + " lacks authority to add blessed users."))
 
     def rem_user(self, issuer, to_rem):
         """
@@ -105,12 +117,13 @@ class Configuration(object):
         if self.get_auth_level(issuer) == Configuration.OP:
             if to_rem in self.settings[Configuration.IRC_BLESSD]:
                 self.settings[Configuration.IRC_BLESSD].remove(to_rem)
-                print to_rem, "successfully removed from blessed users by", issuer
+                toRet = Response(success=True, msg = ("%s successfully removed from blessed users by %s" % (to_rem, issuer)))
                 self.to_path()
+                return toRet
             else:
-                print to_rem, "not a blessed user."
+                return Response(msg = (to_rem + " not a blessed user."))
         else:
-            print issuer, "lacks authority to remove blessed users"
+            return Response(msg = (issuer + " lacks authority to remove blessed users"))
 
     def op_user(self, issuer, to_add):
         """
@@ -119,13 +132,14 @@ class Configuration(object):
         """
         if self.get_auth_level(issuer) == Configuration.OP:
             if to_add in self.settings[Configuration.IRC_OPS]:
-                print to_add, "already an op. Not adding them."
+                return Response(msg = (to_add + " already an op. Not adding them."))
             else:
                 self.settings[Configuration.IRC_OPS].append(to_add)
-                print issuer, "Successfully added", to_add
+                toret = Response(success = True, msg = "%s Successfully added %s" % (issuer, to_add))
                 self.to_path()
+                return toret
         else:
-            print issuer, "lacks authority to add ops."
+            return Response(msg = issuer + " lacks authority to add ops.")
 
     def unop_user(self, issuer, to_rem):
         """
@@ -135,21 +149,22 @@ class Configuration(object):
         if self.get_auth_level(issuer) == Configuration.OP:
             if to_rem in self.settings[Configuration.IRC_OPS]:
                 self.settings[Configuration.IRC_OPS].remove(to_rem)
-                print to_rem, "successfully removed from ops", issuer
+                toret = Response(success = True, msg = "%s successfully removed from ops by" % ( to_rem, issuer))
                 self.to_path()
+                return toret
             else:
-                print to_rem, "not an op."
+                return Response(msg = to_rem + " not an op.")
         else:
-            print issuer, "lacks authority to unop users"
+            return Response(msg = issuer +  " lacks authority to unop users")
 
     def set_do_api_key(self, issuer, key_string):
         """
         Set's configuratinos digital ocean API key
         """
-        ## structure of DO_API_KEYS is an assoc list, issuer -> API_KEY, one per
         if self.get_auth_level(issuer) == Configuration.OP:
             self.settings[Configuration.DO_API_KEY]= key_string
-            print "Set Digital Ocean API key"
+            toret = Response(successful = True, msg = "Set Digital Ocean API key")
             self.to_path()
+            return toret
         else:
-            print issuer, "can't set the key as they aren't an operator.."
+            return Response(msg = issuer + " can't set the key as they aren't an operator.")
