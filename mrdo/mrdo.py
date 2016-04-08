@@ -128,7 +128,7 @@ class MrDo(SingleServerIRCBot):
         cmd = cmd[1:]
         ret_string = "Gave ops to"
         for uname in cmd:
-            self.config.op_user(user, uname)
+            print self.config.op_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
         self._respond(rc, ret_string)
 
@@ -139,7 +139,7 @@ class MrDo(SingleServerIRCBot):
         cmd = cmd[1:]
         ret_string = "Removed ops from"
         for uname in cmd:
-            self.config.unop_user(user, uname)
+            print self.config.unop_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
         self._report(rc, ret_string)
 
@@ -150,7 +150,7 @@ class MrDo(SingleServerIRCBot):
         cmd = cmd[1:]
         ret_string = "Blessed"
         for uname in cmd:
-            self.config.add_user(user, uname)
+            print self.config.add_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
         self._respond(rc, ret_string)
 
@@ -161,7 +161,7 @@ class MrDo(SingleServerIRCBot):
         cmd = cmd[1:]
         ret_string = "Cursed"
         for uname in cmd:
-            self.config.rem_user(user, uname)
+            print self.config.rem_user(user, uname)
             ret_string = "%s %s" % (ret_string, uname)
         self._respond(rc, ret_string)
 
@@ -174,7 +174,7 @@ class MrDo(SingleServerIRCBot):
         try:
             self.manager = digitalocean.Manager(token=key.strip())
             print "manager set"
-            self.config.set_do_api_key(user, key)
+            print self.config.set_do_api_key(user, key)
             print "key set"
             self._respond(rc, "Set Digital Ocean key")
         except:
