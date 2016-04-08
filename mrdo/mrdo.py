@@ -256,6 +256,9 @@ class MrDo(SingleServerIRCBot):
         Dispatches the appropriate command
         """
         print user, "issued", cmd_list
+        if not isinstance(cmd_list, list):
+            print "Something is seriousling wrong. _handle_msg didn't receive a list:", cmd_list
+            return
         if cmd_list == []:
             return
         cmd_name = cmd_list[0]
